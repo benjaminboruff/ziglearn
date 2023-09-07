@@ -783,3 +783,23 @@ test "C string" {
         array[i] = c_string[i];
     }
 }
+
+test "coercion" {
+    var a: [*:0]u8 = undefined;
+    const b: [*]u8 = a;
+    _ = b;
+
+    var c: [5:0]u8 = undefined;
+    const d: [5]u8 = c;
+    _ = d;
+
+    var e: [:10]u8 = undefined;
+    const f = e;
+    _ = f;
+}
+
+test "sentinel terminated slicing" {
+    var x = [_:0]u8{255} ** 3;
+    const y = x[0..3 :0];
+    try expect(y.len == 3);
+}
