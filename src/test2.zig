@@ -52,3 +52,20 @@ test "GPA" {
     const bytes = try allocator.alloc(u8, 100);
     defer allocator.free(bytes);
 }
+
+const expectEqualSlices = std.testing.expectEqualSlices;
+const ArrayList = std.ArrayList;
+const test_allocator = std.testing.allocator;
+
+test "arraylist" {
+    var list = ArrayList(u8).init(test_allocator);
+    defer list.deinit();
+    try list.append('H');
+    try list.append('e');
+    try list.append('l');
+    try list.append('l');
+    try list.append('o');
+    try list.appendSlice(" World!");
+
+    try expectEqualSlices(u8, list.items, "Hello World!");
+}
